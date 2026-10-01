@@ -193,7 +193,7 @@ TaskPriority GenerateBlockTask::get_priority() {
 
 bool GenerateBlockTask::is_cancelled() {
 	if (_stream_dependency->valid == false) {
-		return false;
+		return true;
 	}
 	if (_cancellation_token.is_valid()) {
 		return _cancellation_token.is_cancelled();
