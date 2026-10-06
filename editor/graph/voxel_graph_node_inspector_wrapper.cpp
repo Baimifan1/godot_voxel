@@ -1,4 +1,5 @@
 #include "voxel_graph_node_inspector_wrapper.h"
+#include "graph_nodes_zh.h"
 #include "../../constants/voxel_string_names.h"
 #include "../../generators/graph/node_type_db.h"
 #include "../../util/containers/std_vector.h"
@@ -58,7 +59,7 @@ void VoxelGraphNodeInspectorWrapper::_get_property_list(List<PropertyInfo> *p_li
 				continue;
 			}
 			PropertyInfo pi;
-			pi.name = param.name;
+			pi.name = GraphNodesZh::bilingual_port(param.name);
 			pi.type = param.type;
 			pi.class_name = param.class_name;
 
@@ -110,7 +111,7 @@ void VoxelGraphNodeInspectorWrapper::_get_property_list(List<PropertyInfo> *p_li
 		}
 
 		PropertyInfo pi;
-		pi.name = port_name;
+		pi.name = GraphNodesZh::bilingual_port(port_name);
 		// All I/Os are floats at the moment.
 		pi.type = Variant::FLOAT;
 		if (autoconnect_enabled && autoconnect_hint != VoxelGraphFunction::AUTO_CONNECT_NONE) {
@@ -222,7 +223,7 @@ bool VoxelGraphNodeInspectorWrapper::_set(const StringName &p_name, const Varian
 	ERR_FAIL_COND_V(undo_redo == nullptr, false);
 	EditorUndoRedoManager &ur = *undo_redo;
 
-	const String name = p_name;
+	const String name = GraphNodesZh::strip_bilingual(p_name);
 
 	// Special case because `name` is neither a parameter nor an output
 	if (name == "name") {
@@ -250,7 +251,7 @@ bool VoxelGraphNodeInspectorWrapper::_set(const StringName &p_name, const Varian
 
 	uint32_t index;
 
-	if (graph->get_node_param_index_by_name(_node_id, p_name, index)) {
+	if (graph->get_node_param_index_by_name(_node_id, name, index)) {
 		Variant previous_value = graph->get_node_param(_node_id, index);
 		ur.create_action("Set VoxelGeneratorGraph node parameter");
 		ur.add_do_method(graph.ptr(), "set_node_param", _node_id, index, p_value);
@@ -274,7 +275,7 @@ bool VoxelGraphNodeInspectorWrapper::_set(const StringName &p_name, const Varian
 
 		ur.commit_action();
 
-	} else if (graph->get_node_input_index_by_name(_node_id, p_name, index)) {
+	} else if (graph->get_node_input_index_by_name(_node_id, name, index)) {
 		Variant previous_value = graph->get_node_default_input(_node_id, index);
 		ur.create_action("Set VoxelGeneratorGraph node default input");
 		ur.add_do_method(graph.ptr(), "set_node_default_input", _node_id, index, p_value);
@@ -295,7 +296,7 @@ bool VoxelGraphNodeInspectorWrapper::_get(const StringName &p_name, Variant &r_r
 	Ref<VoxelGraphFunction> graph = get_graph();
 	ERR_FAIL_COND_V(graph.is_null(), false);
 
-	const String name = p_name;
+	const String name = GraphNodesZh::strip_bilingual(p_name);
 
 	if (name == "name") {
 		r_ret = graph->get_node_name(_node_id);
@@ -308,12 +309,12 @@ bool VoxelGraphNodeInspectorWrapper::_get(const StringName &p_name, Variant &r_r
 	}
 
 	unsigned int index;
-	if (graph->get_node_param_index_by_name(_node_id, p_name, index)) {
+	if (graph->get_node_param_index_by_name(_node_id, name, index)) {
 		r_ret = graph->get_node_param(_node_id, index);
 		return true;
 	}
 
-	if (graph->get_node_input_index_by_name(_node_id, p_name, index)) {
+	if (graph->get_node_input_index_by_name(_node_id, name, index)) {
 		r_ret = graph->get_node_default_input(_node_id, index);
 		return true;
 	}

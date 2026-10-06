@@ -22,6 +22,7 @@
 #include "../../util/godot/editor_scale.h"
 #include "graph_nodes_doc_data.h"
 #include "graph_nodes_doc_zh.h"
+#include "graph_nodes_zh.h"
 
 #ifdef ZN_GODOT
 
@@ -242,7 +243,7 @@ VoxelGraphNodeDialog::VoxelGraphNodeDialog() {
 		const pg::NodeType &node_type = pg::NodeTypeDB::get_singleton().get_type(type_index);
 
 		Item item;
-		item.name = node_type.name;
+		item.name = GraphNodesZh::bilingual_name(node_type.name);
 		item.category = category_index;
 		item.description = description;
 		item.id = type_index;

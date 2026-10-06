@@ -1,4 +1,5 @@
 #include "voxel_graph_editor_node.h"
+#include "graph_nodes_zh.h"
 #include "../../generators/graph/node_type_db.h"
 #include "../../generators/graph/voxel_generator_graph.h"
 #include "../../util/godot/classes/h_box_container.h"
@@ -237,13 +238,13 @@ void VoxelGraphEditorNode::update_title(const VoxelGraphFunction &graph, uint32_
 		}
 
 	} else if (zylann::godot::is_empty(node_name)) {
-		set_title(type.name);
+		set_title(GraphNodesZh::bilingual_name(type.name));
 
 	} else if (type_id == VoxelGraphFunction::NODE_COMMENT) {
 		set_title(String(node_name));
 
 	} else {
-		set_title(String("{0} ({1})").format(varray(node_name, type.name)));
+		set_title(String("{0} ({1})").format(varray(node_name, GraphNodesZh::bilingual_name(type.name))));
 	}
 }
 
