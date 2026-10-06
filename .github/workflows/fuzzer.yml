@@ -1,9 +1,8 @@
 name: 🐺️ Fuzzer
+# 本项目改动：这个 fork 只用来产出 Windows 汉化版编辑器 ⇒ 不再随 push / 每日定时自动跑。
+# 需要时去 Actions 页面手动 Run workflow。
 on:
-  push:
-  pull_request:
-  schedule:
-    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -1,9 +1,19 @@
 name: 🚪 Windows Builds
+# 本项目改动：
+#  · 本 fork 只产出 Windows 汉化版编辑器，其余平台的 workflow 已改成手动触发（见同目录其它 yml）。
+#  · `.github/**` 与文档改动不影响 exe ⇒ 用 `paths-ignore` 跳过，省一轮构建。
+#    （副作用：以后改 workflow 想让它生效，要在 Actions 页面手动 Run workflow，或顺手改一个源码文件）
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - '**.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

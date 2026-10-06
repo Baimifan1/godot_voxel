@@ -1,11 +1,10 @@
 # Checks a few combinations of reduced feature flags
 
 name: ✂ Extension Strip Checks
+# 本项目改动：这个 fork 只用来产出 Windows 汉化版编辑器 ⇒ 不再随 push 自动跑。
+# 需要时去 Actions 页面手动 Run workflow。
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  workflow_dispatch:
 
 concurrency:
   # Cancel in-progress builds when triggering new ones, to save resources.
