@@ -158,6 +158,17 @@ void VoxelGraphEditorNode::update_layout(const VoxelGraphFunction &graph) {
 			label->set_text(inputs[slot_index].name);
 			property_control->add_child(label);
 
+			// 本项目汉化：鼠标悬停这个「参数」（名字或其值）时显示中文说明。
+			// ⚠️ 必须挂在 property_control（整行）上，不能只挂 hint_label：
+			//   `Label` 默认 `MOUSE_FILTER_IGNORE`（见 scene/gui/label.cpp），命中会落到父控件；
+			//   而显示值的 hint_label 虽然是 PASS，但它自己的 tooltip 多数时候是空的
+			//   ⇒ Godot 的 `Viewport::_gui_get_tooltip()`（scene/main/viewport.cpp:1566）
+			//     在 tooltip 为空时会自动向上找父控件。
+			//   ⇒ 挂在这一行上，「参数名」和「参数值」两处悬停都能出中文，
+			//     同时不影响原有的「浮点全精度值」提示（那个挂在 hint_label 上，优先级更高）。
+			// 查不到中文的端口（例如自定义函数节点）返回空 ⇒ 不显示，不会出错。
+			property_control->set_tooltip_text(GraphNodesZh::port_desc_zh(inputs[slot_index].name));
+
 			Label *hint_label = memnew(Label);
 			hint_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 			hint_label->set_modulate(hint_label_modulate);
