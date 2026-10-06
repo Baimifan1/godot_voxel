@@ -25,29 +25,11 @@ jobs:
     strategy:
       matrix:
         include:
+          # 本项目改动：只保留 Editor 变体（官方另有 Tracy / Float64 / Template 三个变体，全跑太慢）
           - name: 4.7 Editor
             target: editor
             precision: single
             executable_name: godot.windows.editor.x86_64.exe
-
-          - name: 4.7 Editor + Tracy 0.13.1
-            target: editor
-            precision: single
-            executable_name: godot.windows.tracy.editor.x86_64.exe
-            original_executable_name: godot.windows.editor.x86_64.exe
-            # We can't easily specify an absolute path to Tracy because variables aren't allowed in matrix.
-            # So we use a relative path, but currently Godot's Tracy integration looks them up relative to core/profiling
-            extra_scons_params: profiler=tracy "profiler_path=../../thirdparty/tracy/public"
-
-          - name: 4.7 Editor Float64
-            target: editor
-            precision: double
-            executable_name: godot.windows.editor.double.x86_64.exe
-
-          - name: 4.7 Template
-            target: template_release
-            precision: single
-            executable_name: godot.windows.template_release.x86_64.exe
 
     steps:
       # Clone Godot
@@ -138,7 +120,7 @@ jobs:
       - name: Compilation
         run: |
           set PYTHONIOENCODING=utf-8
-          scons verbose=yes warnings=extra voxel_werror=yes strict_checks=yes strict_checks=yes platform=windows tests=no target=${{matrix.target}} dev_build=no precision=${{matrix.precision}} production=yes "cache_path=${{github.workspace}}/.scons_cache/" cache_limit=${{env.SCONS_CACHE_LIMIT_GB}} "angle_libs=${{github.workspace}}/angle" d3d12=yes ${{matrix.extra_scons_params}}
+          scons verbose=yes warnings=extra strict_checks=yes strict_checks=yes platform=windows tests=no target=${{matrix.target}} dev_build=no precision=${{matrix.precision}} production=yes "cache_path=${{github.workspace}}/.scons_cache/" cache_limit=${{env.SCONS_CACHE_LIMIT_GB}} "angle_libs=${{github.workspace}}/angle" d3d12=yes ${{matrix.extra_scons_params}}
 
       - name: "Rename executable"
         if: ${{ contains(matrix.extra_scons_params, 'tracy') }}

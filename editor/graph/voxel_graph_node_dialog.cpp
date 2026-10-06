@@ -21,6 +21,7 @@
 #include "../../util/godot/core/string.h"
 #include "../../util/godot/editor_scale.h"
 #include "graph_nodes_doc_data.h"
+#include "graph_nodes_doc_zh.h"
 
 #ifdef ZN_GODOT
 
@@ -212,7 +213,7 @@ VoxelGraphNodeDialog::VoxelGraphNodeDialog() {
 					break;
 				}
 			}
-			description = doc->description;
+			description = GraphNodesDocDataZh::translated_description(type.name, doc->description);
 		}
 
 		if (type_index == pg::VoxelGraphFunction::NODE_FUNCTION) {
