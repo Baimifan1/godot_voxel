@@ -12,7 +12,7 @@
 #ifndef VOXEL_ZH_DATA_H
 #define VOXEL_ZH_DATA_H
 
-#include "../../util/godot/core/string.h"
+#include "../util/godot/core/string.h"
 
 namespace VoxelZhData {
 

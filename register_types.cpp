@@ -474,7 +474,6 @@ void initialize_voxel_module(ModuleInitializationLevel p_level) {
 		ClassDB::register_internal_class<VoxelAboutWindow>();
 		ClassDB::register_internal_class<VoxelTerrainEditorInspectorPlugin>();
 		ClassDB::register_internal_class<VoxelTerrainEditorPlugin>();
-		ClassDB::register_internal_class<zylann::godot::VoxelZhTranslationsPlugin>();
 		ClassDB::register_internal_class<VoxelTerrainEditorTaskIndicator>();
 
 		ClassDB::register_internal_class<VoxelBlockyModelViewer>();

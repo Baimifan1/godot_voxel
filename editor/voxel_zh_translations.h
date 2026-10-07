@@ -1,7 +1,7 @@
 #ifndef ZOXEL_ZH_TRANSLATIONS_H
 #define ZOXEL_ZH_TRANSLATIONS_H
 
-#include "../../util/godot/classes/editor_plugin.h"
+#include "../util/godot/classes/editor_plugin.h"
 
 namespace zylann::godot {
 
