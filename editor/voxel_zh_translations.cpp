@@ -19,9 +19,10 @@ namespace {
 			return;
 		}
 		// 哨兵：第一条若已经查得到译文，说明本插件已灌过。
+		// ⚠️ TranslationDomain::translate() 的 context 参数**没有默认值**，必须显式传。
 		const String probe_key = String::utf8(p_entries[0].msgid);
 		const String probe_val = String::utf8(p_entries[0].zh);
-		if (p_domain->translate(probe_key) == probe_val) {
+		if (p_domain->translate(probe_key, StringName()) == probe_val) {
 			return;
 		}
 
