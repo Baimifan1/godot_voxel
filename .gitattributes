@@ -1,0 +1,8 @@
+#⚠️ 文档 XML 必须强制 LF，否则 CI（windows-latest，core.autocrlf=true）会把它们
+#checkout 成 CRLF。doctool 生成的 doc_data 会保留 \r，于是 DocData 里的描述变成
+# "L1\r\nL2\r\n…"，而译文键是 \n 连接的形式 ⇒ 帮助面板/属性悬停的说明永远命不中译文。
+# 现象非常有迷惑性：**单行条目全部正常**（没有换行 ⇒ 不受影响），只有多行条目全灭。
+#
+# 官方 godot 仓库自带行尾约束，所以它的多行文档能正常命中；模块这边原本没有，
+# 于是踩了这个坑。
+doc/**/*.xml text eol=lf
