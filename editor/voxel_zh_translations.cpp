@@ -43,7 +43,12 @@ String VoxelZhTranslationsPlugin::_zn_get_plugin_name() const {
 VoxelZhTranslationsPlugin::VoxelZhTranslationsPlugin() {}
 
 void VoxelZhTranslationsPlugin::_notification(int p_what) {
-	if (p_what == NOTIFICATION_ENTER_TREE) {
+	// ENTER_TREE：编辑器启动时注入。
+	// TRANSLATION_CHANGED：**在编辑器设置里切换语言**后重灌 —— setup_language() 会先
+	// load_editor_translations()/load_doc_translations()（内部 domain->clear()），
+	// **之后**才 set_locale() 触发本通知 ⇒ 我们一定在 clear 之后重建。
+	// 幂等靠 add_table() 里的哨兵，重复触发不会叠加。
+	if (p_what == NOTIFICATION_ENTER_TREE || p_what == NOTIFICATION_TRANSLATION_CHANGED) {
 		_inject();
 	}
 }
@@ -61,10 +66,14 @@ void VoxelZhTranslationsPlugin::_inject() const {
 
 	Ref<TranslationDomain> prop_domain = ts->get_or_add_domain("godot.properties");
 	Ref<TranslationDomain> doc_domain = ts->get_or_add_domain("godot.documentation");
+	// 编辑器 UI 文本（ZN_TTR → TTR → get_editor_domain()->translate(msg, "")）。
+	// 域名字符串必须与 TranslationServer::get_editor_domain() 内部用的一致，否则拿到的不是同一个域。
+	Ref<TranslationDomain> editor_domain = ts->get_or_add_domain("godot.editor");
 
 	add_table(prop_domain, locale, VoxelZhData::PROPERTY_NAMES, VoxelZhData::PROPERTY_COUNT);
 	add_table(prop_domain, locale, VoxelZhData::GROUP_NAMES, VoxelZhData::GROUP_COUNT);
 	add_table(doc_domain, locale, VoxelZhData::DOCS, VoxelZhData::DOC_COUNT);
+	add_table(editor_domain, locale, VoxelZhData::UI_STRINGS, VoxelZhData::UI_COUNT);
 }
 
 } // namespace zylann::godot
