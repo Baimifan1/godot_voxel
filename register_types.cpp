@@ -126,6 +126,7 @@
 #include "editor/spot_noise/spot_noise_editor_plugin.h"
 #include "editor/terrain/voxel_terrain_editor_plugin.h"
 #include "editor/vox/vox_editor_plugin.h"
+#include "editor/voxel_zh_translations.h"
 #include "util/godot/classes/os.h"
 
 #ifdef VOXEL_ENABLE_FAST_NOISE_2
@@ -473,6 +474,7 @@ void initialize_voxel_module(ModuleInitializationLevel p_level) {
 		ClassDB::register_internal_class<VoxelAboutWindow>();
 		ClassDB::register_internal_class<VoxelTerrainEditorInspectorPlugin>();
 		ClassDB::register_internal_class<VoxelTerrainEditorPlugin>();
+		ClassDB::register_internal_class<zylann::godot::VoxelZhTranslationsPlugin>();
 		ClassDB::register_internal_class<VoxelTerrainEditorTaskIndicator>();
 
 		ClassDB::register_internal_class<VoxelBlockyModelViewer>();
@@ -533,6 +535,8 @@ void initialize_voxel_module(ModuleInitializationLevel p_level) {
 		EditorPlugins::add_by_type<ZN_SpotNoiseEditorPlugin>();
 		EditorPlugins::add_by_type<VoxelBlockyLibraryEditorPlugin>();
 		EditorPlugins::add_by_type<VoxelGeneratorMultipassEditorPlugin>();
+		// 本项目汉化：把编译进来的中文译文注入 godot.properties / godot.documentation
+		EditorPlugins::add_by_type<zylann::godot::VoxelZhTranslationsPlugin>();
 
 #ifdef VOXEL_ENABLE_MESH_SDF
 		EditorPlugins::add_by_type<VoxelMeshSDFEditorPlugin>();
