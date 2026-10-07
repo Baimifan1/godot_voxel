@@ -40,8 +40,12 @@ String VoxelZhTranslationsPlugin::_zn_get_plugin_name() const {
 	return "Voxel 中文汉化";
 }
 
-void VoxelZhTranslationsPlugin::_enter_tree() {
-	_inject();
+VoxelZhTranslationsPlugin::VoxelZhTranslationsPlugin() {}
+
+void VoxelZhTranslationsPlugin::_notification(int p_what) {
+	if (p_what == NOTIFICATION_ENTER_TREE) {
+		_inject();
+	}
 }
 
 void VoxelZhTranslationsPlugin::_inject() const {

@@ -1,5 +1,5 @@
-#ifndef ZOXEL_ZH_TRANSLATIONS_H
-#define ZOXEL_ZH_TRANSLATIONS_H
+#ifndef VOXEL_ZH_TRANSLATIONS_H
+#define VOXEL_ZH_TRANSLATIONS_H
 
 #include "../util/godot/classes/editor_plugin.h"
 
@@ -12,18 +12,21 @@ namespace zylann::godot {
 // ⭐ 时机：必须在 `EditorSettings::setup_language()` **之后**。
 // 那个函数里的 `load_editor_translations()` / `load_doc_translations()`
 // 会先 `domain->clear()`，比它更早注入的内容会被清掉。
-// `EditorPlugin::_enter_tree()` 由编辑器在 UI 建好、插件挂上时才调用，时机正好。
+// 用 `NOTIFICATION_ENTER_TREE` 触发，时机正好（与 `VoxelBlockyLibraryEditorPlugin` 同一套路）。
+//
+// ⚠️ 不要给 `_notification` 加 `override`：4.7 里 `Node::_enter_tree()` 之类是用
+// `GDVIRTUAL0()` 声明的（scene/main/node.h:435），不是普通 virtual，加了会报 C3668。
 class VoxelZhTranslationsPlugin : public ZN_EditorPlugin {
 	GDCLASS(VoxelZhTranslationsPlugin, ZN_EditorPlugin)
 public:
-	VoxelZhTranslationsPlugin() {}
+	VoxelZhTranslationsPlugin();
 
 protected:
 	String _zn_get_plugin_name() const override;
-	void _enter_tree() override;
 
 private:
 	void _inject() const;
+	void _notification(int p_what);
 
 	// When compiling with GodotCpp, `_bind_methods` is not optional
 	static void _bind_methods() {}
@@ -31,4 +34,4 @@ private:
 
 } // namespace zylann::godot
 
-#endif // ZOXEL_ZH_TRANSLATIONS_H
+#endif // VOXEL_ZH_TRANSLATIONS_H
